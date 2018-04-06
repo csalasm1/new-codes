@@ -7,6 +7,9 @@ double trapecio_reg(const double a,const double b,const int n, fptr func);
 double trapecio_richardson(const double a,const double b,const int n, fptr func);
 double simpson(const double a,const double b,const int n, fptr func);
 double simpson_richardson(const double a,const double b,const int n, fptr func);
+double funcio(double x);
+double valormedio_newton(const double a,const double b, const int n, fptr funcio);
+double newvalormedio (const double a,const double b, const int n, fptr funcio);
 
 int main (void)
 {
@@ -17,9 +20,18 @@ int main (void)
     std::cout << "la integral por trapecio para n=200 es: " << trapecio_reg(0,M_PI,10*N, std::sin) << std::endl;
     std::cout << "la integral por trapecio richard para n=200 es: " << trapecio_richardson(0,M_PI,10*N, std::sin) << std::endl;
     std::cout << "la integral por simpson para n=200 es: " << simpson(0,M_PI,10*N, std::sin) << std::endl;
-    std::cout << "la integral por simpson richard para n=200 es: " << simpson_richardson(0,M_PI,10*N, std::sin) << std::endl;
-
+    std::cout << atan(1) <<std::endl;
+    std::cout << "la integral por simpson richard para n=200 es: " << simpson_richardson(0,1,10*N, std::atan) << std::endl;
+    std::cout << "la integral por simpson richard para n=200 es: " << simpson_richardson(0,2,10*N,funcio) << std::endl;
+    std::cout << "la integral por simpson richard para n=200 es: " << valormedio_newton(0,2,10*N,funcio) << std::endl;
+    std::cout << "la integral por simpson richard para n=200 es: " << newvalormedio(0,2,10*N,funcio) << std::endl;
 }
+double funcio(double x)
+{
+   double ya= x*x;
+    return ya;
+}
+
 double trapecio_reg(const double a,const double b,const int n, fptr func)
 {
     const double h = (b-a)/n;
@@ -60,4 +72,24 @@ double simpson_richardson(const double a,const double b, const int n,fptr func)
 {
     return (4*simpson(a,b,2*n,func)- simpson(a, b, n, func))/3;
 }
-
+double valormedio_newton(const double a,const double b, const int n, fptr funcio)
+{
+    double sum=0;
+    double me=(funcio(a)+funcio(b))/2;
+    double h=(b-a)/n;
+    for(int ii=0;ii<=n/2;ii++){
+        double x = a + (2*ii-1)*h;
+        sum += funcio(x);
+    }
+    return sum*2*h;
+}
+double newvalormedio (const double a,const double b, const int n, fptr funcio)
+{
+  const double h =(b-a)/n;
+    double sum=0;
+    for(int ii=0; ii<=n; ii++){
+     double x= a+ (ii*h);
+     sum +=funcio(x);
+    }
+    return (sum*h)-((h*h*h/3.0)*1);
+}
