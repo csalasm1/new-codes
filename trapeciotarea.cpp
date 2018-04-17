@@ -3,7 +3,7 @@
 
 double funcion(double x)
 {
-    double ya= 2*x*asin(x*x);
+    double ya= 1/(x*(x+2.0));
     return ya;
 }
 int main ()
